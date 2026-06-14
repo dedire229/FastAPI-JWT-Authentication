@@ -1,7 +1,7 @@
 # FastAPI Tutorial
 
 ## 1. Setting up your Virtual Environment
-## 2. Passsword Hashing
+## 2. Password Hashing
 
 
 ## 3. Creating and assigning JWT Tokens
