@@ -25,19 +25,22 @@ async def create_user(data: UserAuth):
         )
     user = {
         'email': data.email,
-        'username': data.username,
-        'id': str(uuid4())
+        'password': get_hashed_password(data.password),
+        'id': str(uuid4()),
+        "username": data.username
     }
     users_db[data.email] = user    # saving user to database
-    return user
+    return UserOut(id=user["id"],
+                   email=user["email"],
+                   username=user["username"])
 
 @app.post('/login', summary="Create access and refresh tokens for user", response_model=TokenSchema)
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
-    user = users_db.get(form_data.username, None)
-    if user is None:
+    user = users_db.get(form_data.username)
+    if not user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Incorrect email or password"
+            detail="User not found!"
         )
 
     hashed_pass = user['password']
@@ -51,3 +54,14 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
         "access_token": create_access_token(user['email']),
         "refresh_token": create_refresh_token(user['email']),
     }
+
+@app.get("/users", response_model=list[UserOut])
+async def get_users():
+    return [
+        {
+            "id": user["id"],
+            "username": user["username"],
+            "email": user["email"]
+        }
+        for user in users_db.values()
+    ]

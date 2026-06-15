@@ -11,7 +11,7 @@ class UserOut(BaseModel):
     """"Schema that defines what is sent back to the client."""
     id: str
     username: str 
-    email: str 
+    email: str
 
 
 class TokenSchema(BaseModel):
