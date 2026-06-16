@@ -4,11 +4,16 @@
 Fire up your command prompt/terminal and type
 
 ```powershell
-    python -m venv fastapienv
-    fastapienv\Scripts\activate                        # on Windows
-    source fastapienv/bin/activate                      # on macOs
+python -m venv fastapienv
+fastapienv\Scripts\activate                        # on Windows
+source fastapienv/bin/activate                      # on macOs
 ```
-## 2. Password Hashing
+
+## 2. Installing FastAPI with all dependencies
+```powershell
+pip install "fastapi[standard]"
+```
+## 3. Understanding Password Hashing
 
 ```
 from passlib.context import CryptContext
@@ -25,7 +30,7 @@ def verify_password(password: str, hashed_pass: str) -> bool:
 ```
 
 
-## 3. Creating and assigning JWT Tokens
+## 4. Creating and assigning JWT Tokens
 
 If you have the project setup on your local environment, here are the dependencies that you need to install for JWT authentication (assuming that you have a FastAPI project running):
 
@@ -36,6 +41,6 @@ JWT means "JSON Web Tokens". It's a standard way to codify a JSON object in a lo
 
 It's not encrypted, so anyone could recover the information from the contents, but since it's signed, so when you receive a token that you issued, you can verify that it was you who issued it.
 
-## 4. User creation
-## 5. Authorization vs. Authentication
-## 6. Validating tokens on each request to ensure authentication
+## 5. User creation
+## 6. Authorization vs. Authentication
+## 7. Validating tokens on each request to ensure authentication
