@@ -5,7 +5,8 @@ Fire up your command prompt/terminal and type
 
 ```powershell
     python -m venv fastapienv
-    fastapienv\Scripts\activate
+    fastapienv\Scripts\activate                        # on Windows
+    source fastapienv/bin/activate                      # on macOs
 ```
 ## 2. Password Hashing
 
