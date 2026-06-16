@@ -38,7 +38,7 @@ If you have the project setup on your local environment, here are the dependenci
 ```powershell
  pip install "python-jose[cryptography]" "passlib[bcrypt]" python-multipart 
 ```
-### what's inside `utils.py`?
+### How password hashing works inside `utils.py`?
 ```
 from passlib.context import CryptContext
 
@@ -58,6 +58,20 @@ JWT means "JSON Web Tokens". It's a standard way to codify a JSON object in a lo
     ` eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c `
 
 It's not encrypted, so anyone could recover the information from the contents, but since it's signed, so when you receive a token that you issued, you can verify that it was you who issued it.
+```
+def create_access_token(subject: Union[str, Any], expires_delta: int = None)->str:
+    if expires_delta is not None:
+        expires_delta = datetime.utcnow() + expires_delta
+    else:
+        expires_delta = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    
+    to_encode = {"exp": expires_delta, 
+                 "sub": str(subject)}
+    encoded_jwt = jwt.encode(to_encode,
+                             SECRET_KEY, 
+                             ALGORITHM)
+    return encoded_jwt
+```
 
 ## 5. User creation
 ## 6. Authorization vs. Authentication
