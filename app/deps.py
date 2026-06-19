@@ -4,13 +4,13 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from .utils import (
     ALGORITHM,
-    JWT_SECRET_KEY
+    SECRET_KEY
 )
 
 from jose import jwt
 from pydantic import ValidationError
 from app.schemas import TokenPayload, SystemUser
-from .app import users_db                                                        # importing the user dictionary from app/app.py 
+from .store import users_db
 
 reuseable_oauth = OAuth2PasswordBearer(
     tokenUrl="/login",
@@ -21,7 +21,7 @@ reuseable_oauth = OAuth2PasswordBearer(
 async def get_current_user(token: str = Depends(reuseable_oauth)) -> SystemUser:
     try:
         payload = jwt.decode(
-            token, JWT_SECRET_KEY, algorithms=[ALGORITHM]
+            token, SECRET_KEY, algorithms=[ALGORITHM]
         )
         token_data = TokenPayload(**payload)
 
@@ -39,7 +39,6 @@ async def get_current_user(token: str = Depends(reuseable_oauth)) -> SystemUser:
         )
 
     user: Union[dict[str, Any], None] = users_db.get(token_data.sub, None)
-
 
     if user is None:
         raise HTTPException(
