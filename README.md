@@ -4,12 +4,14 @@
 ```
 root/
 │
-├── backend 
+├── backend/
 │   └── __init__.py
 │   └── app.py                 # our FastAPI app
 │   └── utils.py                # Utility for JWT encoding/decoding
 │   └── schemas.py              # Pydantic models
 │   └── database.py           # Database connection
+├── templates/
+│   └── index.html             # HTML template
 └── .gitignore 
 └── pyproject.toml         # Project configuration file
 └── README.md
