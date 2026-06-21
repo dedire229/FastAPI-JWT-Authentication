@@ -9,7 +9,7 @@ from .utils import (
     create_refresh_token,
     verify_password
 )
-# from .deps import get_current_user
+from .deps import get_current_user
 from uuid import uuid4 
 
 app = FastAPI()
@@ -75,10 +75,10 @@ def index(request: Request):
         context={"users": users_db}
     )
 
-# @app.get("/me", summary="Get details of currently logged in user",response_model=UserOut)
-# async def get_me(user: str = Depends(get_current_user)):
-#      return {
-#           "User": user 
-#         }
+@app.get("/me", summary="Get details of currently logged in user",response_model=UserOut)
+async def get_me(user: str = Depends(get_current_user)):
+     return {
+          "User": user 
+        }
     
-# print(users_db)
+print(users_db)
