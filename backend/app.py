@@ -56,24 +56,24 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
         "refresh_token": create_refresh_token(user['email']),
     }
 
-# @app.get("/users", response_model=list[UserOut])
-# async def get_users():
-#     return [
-#         {
-#             "id": user["id"],
-#             "username": user["username"],
-#             "email": user["email"]
-#         }
-#         for user in users_db.values()
-#     ]
+@app.get("/users", response_model=list[UserOut])
+async def get_users():
+    return [
+        {
+            "id": user["id"],
+            "username": user["username"],
+            "email": user["email"]
+        }
+        for user in users_db.values()
+    ]
 
-@app.get("/users", response_class=HTMLResponse, response_model=list[UserOut])
-def index(request: Request):
-    return templates.TemplateResponse(
-        name="index.html",
-        request=request,
-        context={"users": users_db}
-    )
+# @app.get("/users", response_class=HTMLResponse, response_model=list[UserOut])
+# def index(request: Request):
+#     return templates.TemplateResponse(
+#         name="index.html",
+#         request=request,
+#         context={"users": users_db}
+#     )
 
 @app.get("/me", summary="Get details of currently logged in user",response_model=UserOut)
 async def get_me(user: str = Depends(get_current_user)):
