@@ -1,7 +1,7 @@
 from fastapi import FastAPI, status, HTTPException, Depends, Request
 from fastapi.responses import RedirectResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
-from .schemas import UserOut, UserAuth, TokenSchema
+from .schemas import UserOut, UserAuth, TokenSchema, SystemUser
 from fastapi.security import OAuth2PasswordRequestForm
 from .utils import (
     get_hashed_password,
@@ -10,10 +10,10 @@ from .utils import (
     verify_password
 )
 from .deps import get_current_user
+from .database import users_db
 from uuid import uuid4 
 
 app = FastAPI()
-users_db = {}
 templates = Jinja2Templates(directory=r"..\templates")
 
 @app.post('/signup', summary="Create new user", response_model=UserOut)
@@ -54,6 +54,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     return {
         "access_token": create_access_token(user['email']),
         "refresh_token": create_refresh_token(user['email']),
+        "token_type": "bearer"
     }
 
 # @app.get("/users", response_model=list[UserOut])
@@ -76,9 +77,9 @@ def index(request: Request):
     )
 
 @app.get("/me", summary="Get details of currently logged in user",response_model=UserOut)
-async def get_me(user: str = Depends(get_current_user)):
-     return {
-          "User": user 
-        }
+async def get_me(user: SystemUser = Depends(get_current_user)):
+    return UserOut(id=user.id,
+                   username=user.username,
+                   email=user.email)
     
-print(users_db)
+# print(users_db)
