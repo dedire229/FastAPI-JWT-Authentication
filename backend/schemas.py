@@ -6,15 +6,23 @@ class UserAuth(BaseModel):
     email: EmailStr
     password: str = Field(min_length=6, max_length=100)
 
-
 class UserOut(BaseModel):
     """"Schema that defines what is sent back to the client."""
     id: str
     username: str 
-    email: str
-
+    email: EmailStr
 
 class TokenSchema(BaseModel):
     access_token: str
     refresh_token: str
     token_type: str = "bearer"
+
+class TokenPayLoad(BaseModel):
+    sub: str 
+    exp: int 
+
+class SystemUser(BaseModel):
+    id: str 
+    username: str 
+    email: EmailStr
+    password: str
