@@ -17,7 +17,7 @@ root/
 └── README.md
 └── .env                     # Environment file, REMEMBER you have to create this!!
 └── requirements.txt 
-└── venv/             # Virtual environment
+└── .venv/             # Virtual environment (hidden) automatically created by uv add command
 ```
 
 ## 1. Setting up your Virtual Environment
