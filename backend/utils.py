@@ -49,7 +49,6 @@ def create_refresh_token(subject: Union[str, Any], expires_delta: int = None) ->
     encoded_jwt = jwt.encode(to_encode, REFRESH_SECRET_KEY, ALGORITHM)
     return encoded_jwt
 
-from jose import JWTError, jwt
 
 def decode_token(token: str):
     try:
